@@ -1,0 +1,17 @@
+div,p,h1,h2,h3,h4,h5,h6,span,i,body,html{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "微软雅黑";
+    font-size:18px;
+}
+button{
+    outline:none;
+    border:none;
+}
+input{
+    outline:none;
+    border:none;
+}
