@@ -17,5 +17,6 @@ module.exports = {
         .set('views',resolve('/src/views/'))
         .set('utils',resolve('/src/utils/'))
         .set('api',resolve('/src/api/'))
+        .set('mixin',resolve('/src/mixin/'));
     }
 }

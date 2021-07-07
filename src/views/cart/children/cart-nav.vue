@@ -7,15 +7,18 @@
 </template>
 
 <script>
-import navBar from "components/common/nav-bar/nav-bar.vue"
+// import navBar from "components/common/nav-bar/nav-bar.vue"
+// 导入混入对象
+import {navBarMixin} from "mixin/index.js"
 export default {
       // 组件名称
     name: 'cart-nav',
+    mixins : [navBarMixin],
     // 组件参数 接收来自父组件的数据
     props: {},
       // 局部注册的组件
     components: {
-        navBar
+        // navBar
     },
       // 组件状态值
     data () {
