@@ -20,4 +20,7 @@ export default {
 <style>
 @import '~assets/icon/iconfont.css';
 @import '~assets/css/base.css';
+#app{
+    background-color:rgb(216, 212, 212);
+}
 </style>
