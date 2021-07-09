@@ -1,59 +1,41 @@
 <template>
     <div class="home">
       <home-nav></home-nav>
-      <myswiper :swiperImage="swiperImage"></myswiper>
-      <myrecommend :recommendData="recommendData"></myrecommend>
-      <week-recommend :weekRecommend="weekRecommend"></week-recommend>
-      <bar-control :title="title" @cbclick="cbclick"></bar-control>
-      <goods-show :goodsData="goodsData[currentType]"></goods-show>
-      home
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      <p>23456</p>
-      </div>
+      <my-scroll class="wrapper" 
+      @scrollevent="scrollevent"
+      ref='myscroll'
+      @pullingUp="goods(currentType)">
+        <myswiper :swiperImage="swiperImage"></myswiper>
+        <myrecommend :recommendData="recommendData"></myrecommend>
+        <week-recommend :weekRecommend="weekRecommend"></week-recommend>
+        <bar-control :title="title" @cbclick="cbclick" ref="barcontrol"></bar-control>
+        <goods-show :goodsData="goodsData[currentType].list"></goods-show>
+      </my-scroll>
+      <back-top @click.native="backtop" :class="{show:show}"></back-top>
+    </div>
 </template>
 
 <script>
 // 导入子组件
-const HomeNav =()=>import("./children/home-nav.vue")
-const myswiper = ()=>import("./children/myswiper.vue")
-const myrecommend = ()=>import("./children/myrecommend.vue")
-const weekRecommend = ()=>import("./children/week-recommend.vue")
-const BarControl = ()=>import("./children/bar-control.vue");
-const GoodsShow = ()=>import("./children/goods-show.vue");
+import MyScroll from "components/content/myscroll.vue"
+import HomeNav from "./children/home-nav.vue"
+import myswiper from "./children/myswiper.vue"
+import myrecommend from "./children/myrecommend.vue"
+import weekRecommend from "./children/week-recommend.vue"
+import BarControl from "./children/bar-control.vue"
+import GoodsShow from "./children/goods-show.vue"
+
+// 导入混入对象
+import top from "mixin/top.js"
 
 // 导入接口文件
 import {swiper,recommend,week,goods} from "api/home.js"
-// import GoodsShow from './children/goods-show.vue'
-// import BarControl from './children/bar-control.vue'
-// import WeekRecommend from './children/week-recommend.vue'
-// import Myswiper from '../cart/children/myswiper.vue'
 export default {
       // 组件名称
     name: 'home',
     // 组件参数 接收来自父组件的数据
     props: {},
+    mixins : [top],
       // 局部注册的组件
     components: {
       HomeNav,
@@ -61,10 +43,8 @@ export default {
       myrecommend,
       weekRecommend,
       BarControl,
-      GoodsShow
-        // GoodsShow
-        // BarControl,
-        // WeekRecommend,
+      GoodsShow,
+      MyScroll,
     },
       // 组件状态值
     data () {
@@ -75,12 +55,22 @@ export default {
           title : ['流行','新品','精选'],//推荐的类型，组件：BarControl
           //每个推荐类型的数据，组件：BarControl的数据
           goodsData: {
-            pop : [],
-            new : [],
-            selection : []
+            pop : {
+              counter : 0,
+              list : []
+            },
+            new : {
+              counter : 0,
+              list: []
+            },
+            selection : {
+              counter : 0,
+              list: []
+            }
           },
           //记录当前所选择的推荐类型 ，BarControl 组件类型
-          currentType : 'pop'
+          currentType : 'pop',
+          show: true,//是否现实返回顶部按钮
         }
     },
     created(){
@@ -111,11 +101,12 @@ export default {
           this.weekRecommend = res.data.week
         });
       },
-      goods(type,page){
-        goods(type,page).then(res=>{
-          this.goodsData[type] = res.data.goods.goodsList;
-          // console.log(this.goodsData);
-          // console.log(res)
+      goods(type){
+        let counter = this.goodsData[type].counter++;
+        goods(type,counter).then(res=>{
+          this.goodsData[type].list.push(...res.data.goods.goodsList);
+          this.$refs.myscroll.scroll.refresh()
+          // console.log(this.goodsData[type]);
         })
       },
 
@@ -132,13 +123,26 @@ export default {
         }
         console.log(this.currentType);
         // this.goods(this.currentType,123456);
-      }
+      },
+    },
+    mounted(){
+      // console.log(this.$refs.barcontrol.$el.offsetTop)
+    },
+    updated(){
+      console.log(this.$refs.barcontrol.$el.offsetTop)
+      this.$refs.myscroll.scroll.refresh();
     }
 }
 </script>
 <style scoped>
 .home{
   background-color:rgb(242, 242, 242);
-  /* background-color:#fff; */
+}
+.wrapper{
+  height:calc(100vh - 13.0666667rem - 11.7333333rem);
+  overflow: hidden;
+}
+.show{
+  opacity: 0;
 }
 </style>
