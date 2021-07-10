@@ -1,6 +1,6 @@
 <template>
     <div class="nav-bar" :style="{color:color,background:background}">
-        <div class="left">
+        <div class="left" @click="backClick">
             <slot name="left"></slot>
         </div>
         <div class="center">
@@ -35,6 +35,11 @@ export default {
     },
     computed : {
         
+    },
+    methods : {
+        backClick(){
+            this.$emit("back");
+        }
     }
 }
 </script>
@@ -42,11 +47,22 @@ export default {
 .nav-bar{
     height:11.7333333rem;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    /* outline:1px solid red; */
     font-size:20px;
     font-weight: 600;
     box-shadow: 0 1px 6px 0px #EAEAEA;
+}
+.nav-bar .left{
+    /* background: black; */
+    /* text-align: center; */
+    flex: 1;
+}
+.nav-bar .center{
+    text-align: center;
+    flex: 1;
+}
+.nav-bar .right{
+    flex:1
 }
 </style>
