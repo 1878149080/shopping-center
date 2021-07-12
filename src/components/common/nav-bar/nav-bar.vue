@@ -60,7 +60,7 @@ export default {
 }
 .nav-bar .center{
     text-align: center;
-    flex: 1;
+    flex: 5;
 }
 .nav-bar .right{
     flex:1

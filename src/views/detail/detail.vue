@@ -1,14 +1,14 @@
 <template>
     <div class="detail">
-        <detail-nav></detail-nav>
+        <detail-nav @active="toPosition" ref='title'></detail-nav>
         <my-scroll class="wrapper"
-        @scrollevent="scrollevent"
+        @scrollevent="changePosition"
         ref='myscroll'>
 
-            <main-swiper :swiperImage="swiper"
-            ></main-swiper>
+            <main-swiper :swiperImage="swiper"></main-swiper>
 
             <shop-info 
+            ref="info"
             :shopName="shopName"
             :price="price"
             :oldPrice="oldPrice"
@@ -18,11 +18,15 @@
             :description="description"></shop-info>
 
             <shop-message
+            ref="message"
             :shopSales="shopSales"
             :shopName="shopName"
             :shopTotalCategory="shopTotalCategory"
             :logo="logo"></shop-message>
+
+
             <shop-photo
+            ref="photo"
             :showImage="showImage"
             :title="title"
             ></shop-photo>
@@ -39,7 +43,6 @@ import ShopMessage from "./children/shopMessage.vue"
 import shopPhoto from "./children/shopPhoto.vue"
 
 // 导入项目公共组件
-// import MySwiper from "components/content/myswiper.vue"
 import MainSwiper from "components/content/main-swiper.vue"
 
 // 导入混入对象
@@ -81,6 +84,8 @@ export default {
 
             title : '',
             showImage : [],
+            currentIndex : 0,
+            themeY : []
         }
     },
     methods : {
@@ -107,6 +112,21 @@ export default {
         },
         getId(){
             this.id = this.$route.query.id;
+        },
+        toPosition(index){
+            this.$refs.myscroll.scroll.scrollTo(0,this.themeY[index],300);
+        },
+        changePosition(position){
+            // console.log(position);
+            for(var i=0;i<this.themeY.length;i++){
+                if((i<this.themeY.length-1 && position.y<=this.themeY[i] && position.y>=this.themeY[i+1]) || (i==this.themeY.length-1 && position.y<=this.themeY[i])){
+                    this.$refs.title.currentIndex = i;
+                }
+                if(position.y>=0){
+                    this.currentIndex = 0;
+                }
+            }
+            this.scrollevent(position);
         }
     },
     created(){
@@ -115,6 +135,17 @@ export default {
         // 获取数据
         this.detailData();
     },
+    mounted(){
+    },
+    updated(){
+        this.$nextTick(()=>{
+            this.themeY = [];
+            this.themeY.push(0);
+            this.themeY.push(-this.$refs.info.$el.offsetTop);
+            this.themeY.push(-this.$refs.message.$el.offsetTop);
+            this.themeY.push(-this.$refs.photo.$el.offsetTop);
+        })
+    }
 }
 </script>
 <style scoped>

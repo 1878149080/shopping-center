@@ -42,11 +42,11 @@ export default {
         BScrollInit(){
             // this.$nextTick(()=>{
                 this.scroll = new BScroll(this.$refs.wrapper,{
+                    probeType : 0,
                     click:true,
                     pullUpLoad: {
                         threshold: 0
                     },
-                    probeType : 3,
                 });
             // });
         },

@@ -24,14 +24,8 @@ import weekRecommend from "./children/week-recommend.vue"
 import BarControl from "./children/bar-control.vue"
 import GoodsShow from "./children/goods-show.vue"
 
-
-
 // 导入项目公共组件
-// import MyScroll from "components/content/myscroll.vue"
 import MainSwiper from "components/content/main-swiper.vue"
-// import myswiper from "components/content/myswiper.vue"
-// import myswiper from "../../components/content/myswiper.vue"
-
 
 // 导入混入对象
 import top from "mixin/top.js"
@@ -53,9 +47,7 @@ export default {
       weekRecommend,
       BarControl,
       GoodsShow,
-      // MyScroll,
       MainSwiper,
-      // myswiper,
     },
       // 组件状态值
     data () {
@@ -121,7 +113,6 @@ export default {
           // console.log(this.goodsData[type]);
         })
       },
-
       // 其他方法
       cbclick(index){//BarControl组件触发点击时，执行的方法
         if(index==0){

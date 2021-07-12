@@ -6,6 +6,7 @@
         <div class="img" v-for="(item,index) in showImage" :key="index">
           <img :src="item" alt="">
         </div>
+        <!-- <div v-for="item in 15" ><img :src="showImage[0]" alt=""></div> -->
       </div>
     </div>
 </template>
@@ -51,7 +52,7 @@ export default {
 }
 .shop-photo img{
   width:100%;
-  height:60rem;
+  height:70rem;
   /* font-size:0px; */
 }
 .shop-photo .img{

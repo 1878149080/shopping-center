@@ -3,7 +3,14 @@
         <template v-slot:left>
           <span class="iconfont icon-leftarrow back"></span>
         </template>
-        <template v-slot:center>商品详情</template>
+        <template v-slot:center class="center156723">
+          <div class="content">
+            <span 
+            v-for="(item,index) in title" 
+            :class="{active:currentIndex===index}"
+            :key="index" @click="active(index)">{{item}}</span>
+          </div>
+        </template>
     </nav-bar>
 </template>
 
@@ -13,7 +20,8 @@ export default {
       // 组件名称
     name: 'detail-nav',
     // 组件参数 接收来自父组件的数据
-    props: {},
+    props: {
+    },
       // 局部注册的组件
     components: {
         NavBar
@@ -21,12 +29,18 @@ export default {
       // 组件状态值
     data () {
         return {
-
+          currentIndex : 0,
+          title : ["商品","参数","评论","推荐"]
         }
     },
     methods : {
       back(){
         this.$router.go(-1);
+      },
+      active(index){
+        // console.log(this.currentIndex);
+        this.currentIndex = index;
+        this.$emit("active",index);
       }
     },
     created(){
@@ -36,7 +50,15 @@ export default {
 <style scoped>
 .detail-nav .back{
   padding-left:6rem;
-  font-size:30px;
-  
+  font-size:8rem;
+}
+.content{
+  width:100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 4.5333333rem;
+}
+.active{
+  color:black;
 }
 </style>
