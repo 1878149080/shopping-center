@@ -5,7 +5,7 @@
       @scrollevent="scrollevent"
       ref='myscroll'
       @pullingUp="goods(currentType)">
-        <myswiper :swiperImage="swiperImage"></myswiper>
+        <main-swiper :swiperImage="swiperData"></main-swiper>
         <myrecommend :recommendData="recommendData"></myrecommend>
         <week-recommend :weekRecommend="weekRecommend"></week-recommend>
         <bar-control :title="title" @cbclick="cbclick" ref="barcontrol"></bar-control>
@@ -16,40 +16,51 @@
 </template>
 
 <script>
+
 // 导入子组件
-import MyScroll from "components/content/myscroll.vue"
 import HomeNav from "./children/home-nav.vue"
-import myswiper from "./children/myswiper.vue"
 import myrecommend from "./children/myrecommend.vue"
 import weekRecommend from "./children/week-recommend.vue"
 import BarControl from "./children/bar-control.vue"
 import GoodsShow from "./children/goods-show.vue"
 
+
+
+// 导入项目公共组件
+// import MyScroll from "components/content/myscroll.vue"
+import MainSwiper from "components/content/main-swiper.vue"
+// import myswiper from "components/content/myswiper.vue"
+// import myswiper from "../../components/content/myswiper.vue"
+
+
 // 导入混入对象
 import top from "mixin/top.js"
+import scroll from "mixin/scroll.js"
 
 // 导入接口文件
 import {swiper,recommend,week,goods} from "api/home.js"
+
 export default {
       // 组件名称
     name: 'home',
     // 组件参数 接收来自父组件的数据
     props: {},
-    mixins : [top],
+    mixins : [top,scroll],
       // 局部注册的组件
     components: {
       HomeNav,
-      myswiper,
       myrecommend,
       weekRecommend,
       BarControl,
       GoodsShow,
-      MyScroll,
+      // MyScroll,
+      MainSwiper,
+      // myswiper,
     },
       // 组件状态值
     data () {
         return {
-          swiperImage : [],//轮播数据
+          swiperData : [],//轮播数据
           recommendData : [],//推荐数据
           weekRecommend : [],//本周推荐数据
           title : ['流行','新品','精选'],//推荐的类型，组件：BarControl
@@ -70,7 +81,7 @@ export default {
           },
           //记录当前所选择的推荐类型 ，BarControl 组件类型
           currentType : 'pop',
-          show: true,//是否现实返回顶部按钮
+          // show: true,//是否现实返回顶部按钮
         }
     },
     created(){
@@ -86,7 +97,8 @@ export default {
       swiper(){
         swiper().then(res=>{
           // console.log(res.data.list);
-          this.swiperImage = res.data.list
+          // this.swiperData.push(...res.data.list)
+          this.swiperData = res.data.list;
         });
       },
       recommend(){
@@ -124,27 +136,13 @@ export default {
         console.log(this.currentType);
         // this.goods(this.currentType,123456);
       },
-      // 记录滚动位置函数
-      scrollevent(position){
-        this.show =  position.y>-500;
-      }
-    },
-    mounted(){
-    },
-    updated(){
-      this.$refs.myscroll.scroll.refresh();
-    },
-    activated(){
-      // 在这里刷新，解决了长时间不会home，无法滚动的情况
-      this.$refs.myscroll.scroll.refresh();
-      console.log('进入home');
     },
     deactivated(){
       console.log('离开home')
     },
     destroyed(){
       console.log('home被销毁了')
-    }
+    },
 }
 </script>
 <style scoped>
