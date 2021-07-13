@@ -2,6 +2,7 @@
     <div class="detail">
         <detail-nav @active="toPosition" ref='title'></detail-nav>
         <my-scroll class="wrapper"
+        @pullingUp="loadMore"
         @scrollevent="changePosition"
         ref='myscroll'>
 
@@ -24,12 +25,13 @@
             :shopTotalCategory="shopTotalCategory"
             :logo="logo"></shop-message>
 
-
             <shop-photo
             ref="photo"
             :showImage="showImage"
             :title="title"
             ></shop-photo>
+
+            <detail-recommend :recommend="recommend"></detail-recommend>
         </my-scroll>
         <back-top @click.native="backtop" :class="{show:show}"></back-top>
     </div>
@@ -41,6 +43,7 @@ import detailNav from "./children/detail-nav.vue"
 import ShopInfo from "./children/shopInfo.vue"
 import ShopMessage from "./children/shopMessage.vue"
 import shopPhoto from "./children/shopPhoto.vue"
+import detailRecommend from "./children/detail-recommend.vue"
 
 // 导入项目公共组件
 import MainSwiper from "components/content/main-swiper.vue"
@@ -50,7 +53,7 @@ import top from "mixin/top.js"
 import scroll from "mixin/scroll.js"
 
 // 导入借口文件
-import {detailData} from "api/detail"
+import {detailData,detailR} from "api/detail"
 export default {
       // 组件名称
     name: 'detail',
@@ -64,6 +67,7 @@ export default {
         ShopInfo,
         ShopMessage,
         shopPhoto,
+        detailRecommend,
     },
       // 组件状态值
     data () {
@@ -85,7 +89,9 @@ export default {
             title : '',
             showImage : [],
             currentIndex : 0,
-            themeY : []
+            themeY : [],
+
+            recommend : []
         }
     },
     methods : {
@@ -110,6 +116,12 @@ export default {
                 // console.log(this.swiper);
             });
         },
+        detailR(){
+            detailR().then(res=>{
+                this.recommend.push(...res.data.goodsList);
+            })
+        },
+        //其他方法
         getId(){
             this.id = this.$route.query.id;
         },
@@ -127,6 +139,9 @@ export default {
                 }
             }
             this.scrollevent(position);
+        },
+        loadMore(){
+            this.detailR();
         }
     },
     created(){
@@ -134,6 +149,7 @@ export default {
         this.getId();
         // 获取数据
         this.detailData();
+        this.detailR();
     },
     mounted(){
     },
@@ -149,6 +165,9 @@ export default {
 }
 </script>
 <style scoped>
+.detail{
+    background-color:rgb(242, 242, 242);
+}
 .wrapper{
     height:calc(100vh - 13.0666667rem - 11.7333333rem);
     overflow: hidden;

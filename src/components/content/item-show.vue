@@ -45,12 +45,14 @@ export default {
 <style scoped>
 .item-show{
     width:45rem;
-    height:69.3333333rem;
+    /* height:69.3333333rem; */
+    height: 65rem;
     margin-bottom:3rem;
     background-color: #fff;
     /* background-color: red; */
     border-radius:5px;
     font-size:0px;
+    /* outline:1px solid red; */
 }
 .item-show>.image{
   width:100%;

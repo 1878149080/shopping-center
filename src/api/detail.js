@@ -9,5 +9,9 @@ function detailData(id){
     });
 }
 
-
-export {detailData}
+function detailR(){
+    return detail({
+        url : "/detail/recommend"
+    });
+}
+export {detailData,detailR}
