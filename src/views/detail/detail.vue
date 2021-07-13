@@ -34,6 +34,7 @@
             <detail-recommend :recommend="recommend"></detail-recommend>
         </my-scroll>
         <back-top @click.native="backtop" :class="{show:show}"></back-top>
+        <detail-bar @addCart="addCart"></detail-bar>
     </div>
 </template>
 
@@ -44,6 +45,7 @@ import ShopInfo from "./children/shopInfo.vue"
 import ShopMessage from "./children/shopMessage.vue"
 import shopPhoto from "./children/shopPhoto.vue"
 import detailRecommend from "./children/detail-recommend.vue"
+import DetailBar from "./children/detail-bar.vue"
 
 // 导入项目公共组件
 import MainSwiper from "components/content/main-swiper.vue"
@@ -68,8 +70,9 @@ export default {
         ShopMessage,
         shopPhoto,
         detailRecommend,
+        DetailBar,
     },
-      // 组件状态值
+    // 组件状态值
     data () {
         return {
             id : null,
@@ -142,6 +145,16 @@ export default {
         },
         loadMore(){
             this.detailR();
+        },
+        addCart(){
+            let content = {};
+            content.id = this.id;
+            content.description = this.description;
+            content.price = this.price;
+            content.logo = this.logo;
+
+            // this.$store.commit("addCart",content);
+            this.$store.dispatch("addCart",content);
         }
     },
     created(){
@@ -151,8 +164,6 @@ export default {
         this.detailData();
         this.detailR();
     },
-    mounted(){
-    },
     updated(){
         this.$nextTick(()=>{
             this.themeY = [];
@@ -160,7 +171,7 @@ export default {
             this.themeY.push(-this.$refs.info.$el.offsetTop);
             this.themeY.push(-this.$refs.message.$el.offsetTop);
             this.themeY.push(-this.$refs.photo.$el.offsetTop);
-        })
+        });
     }
 }
 </script>
