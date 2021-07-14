@@ -9,11 +9,12 @@
       
         <!-- 购物车列表展示 -->
         <car-list :goods="getList" @isAllSelect="isAllSelect"></car-list>
+        <!-- <car-list :goods="getList" @isAllSelect="isChecks"></car-list> -->
 
       </my-scroll>
 
       <!-- 底部结算栏 -->
-      <buttom-bar @select="select" :isCheck="isCheck" :total="total" :quantity="quantity"></buttom-bar>
+      <buttom-bar @select="select" :isCheck="isChecks" :total="total" :quantity="quantity"></buttom-bar>
     </div>
 </template>
 
@@ -40,29 +41,36 @@ export default {
     },
     computed : {
       ...mapGetters(['getList','getLength']),
+      // 选中商品的总价
       total(){
         return this.getList.filter(item => item.check).reduce((previousValue,currentValue) => {
           return previousValue + currentValue.price * currentValue.counter
         },0)
       },
+      // 计算购物车中被选中商品的数量
       quantity(){
         return this.getList.filter(item => item.check).length
+      },
+      // 是否全部选中
+      isChecks(){
+        return !this.getList.find(item => !item.check);
       }
     },
       // 组件状态值
     data () {
         return {
-          isCheck : false,
+          isCheck : false,//全选是否被选中
         }
     },
     methods : {
       // 是否全选
       isAllSelect(){
-        this.isCheck = !this.getList.find(item => !item.check);
+        this.isCheck = this.isChecks;
       },
       // 全部选中
       select(){
         this.getList.forEach(item => {
+          console.log(111111111);
           item.check = this.isCheck ? false : true
         });
         this.isCheck = !this.isCheck;
