@@ -101,7 +101,7 @@ export default {
         // 获取数据方法
         detailData(){
             detailData(this.id).then(res=>{
-                // console.log(res);
+                // console.log(res.data);
                 this.shopName = res.data.shopName;
                 this.description = res.data.description;
                 this.price = res.data.price;
@@ -115,7 +115,7 @@ export default {
                 this.shopSales = res.data.shopSales;
                 this.shopTotalCategory = res.data.shopTotalCategory;
                 this.showImage = res.data.showImage;
-                this.title = res.title;
+                this.title = res.data.title;
                 // console.log(this.swiper);
             });
         },
@@ -152,6 +152,7 @@ export default {
             content.description = this.description;
             content.price = this.price;
             content.logo = this.logo;
+            content.title = this.title;
 
             // this.$store.commit("addCart",content);
             this.$store.dispatch("addCart",content);

@@ -9,6 +9,7 @@ export default {
             commit('addCounter',current);
         }else{
             payLoad.counter = 1;
+            payLoad.check = false;
             commit("addGood",payLoad);
         }
     }

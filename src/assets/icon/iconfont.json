@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "150096",
+      "name": "对勾",
+      "font_class": "duigou",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "485763",
       "name": "收 藏",
       "font_class": "shoucang",
@@ -58,8 +65,8 @@
       "icon_id": "12270782",
       "name": "home",
       "font_class": "home",
-      "unicode": "e60a",
-      "unicode_decimal": 58890
+      "unicode": "e60b",
+      "unicode_decimal": 58891
     },
     {
       "icon_id": "18092937",
